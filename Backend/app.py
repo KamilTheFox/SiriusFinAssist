@@ -1,7 +1,6 @@
 from typing import Optional
 from fastapi import FastAPI, Query
 from pydantic import BaseModel
-import uvicorn
 from fastapi.middleware.cors import CORSMiddleware
 from Qwen import Bot
 
@@ -17,8 +16,6 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-app = FastAPI()
-
 class ChatResponse(BaseModel):
     message: str
     success: bool = True
@@ -29,7 +26,6 @@ async def chat_endpoint(
     message: str = Query(..., description="Сообщение от пользователя")
 ):
     try:
-        # Тут твоя логика обработки
         respObj = ChatResponse(message=bot.get(message))
         print(str(respObj))
         return respObj
@@ -45,5 +41,5 @@ async def chat_endpoint(
 async def root():
     return {"status": "API работает!"}
 
-uvicorn.run(app, host="0.0.0.0", port=8001)
+#uvicorn.run(app, host="0.0.0.0", port=8001)
 
